@@ -1,0 +1,14 @@
+<package>
+<job id="main">
+	<script language="JScript" src="numeric-1.2.6.js"/>
+	<script language="JScript">
+		function print(myInput) {
+			WScript.echo(myInput);
+		}
+	</script>
+	
+
+	<script language="JScript" src="jshell.js"/>
+</job>
+</package>
+
