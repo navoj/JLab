@@ -56,8 +56,8 @@ function stageTransform(stage, panel) {
 	// stageX = stage(:,1);
 	// stageY = stage(:,2);
 
-	var stageX;
-	var stageY;
+	var stageX = [];
+	var stageY = [];
         var SDim = MatrixDim(stage);
 	for (var i = 0; i < SDim[0]; i++) {
 		stageX.push(stage[i][0]);
@@ -135,15 +135,15 @@ function inverseTransform(M,N) {
 	}
 
 	// M.' * M 
-	var mProd = make_matrix(MDim[0],MDim[1]);
-	mProd = matrixMult(transpose(M),M);
+	var mProd = _st_make_matrix(MDim[0],MDim[1]);
+	mProd = matrixMult(_st_transpose(M),M);
 
 	// inverse(M.' * M)
-	mProd = inverse(mProd);
+	mProd = _st_inverse(mProd);
 
 	// M.' * N
-	var nProd = make_matrix(MDim[0],NDim[0]);
-	nProd = matrixMult(transpose(M),N);
+	var nProd = _st_make_matrix(MDim[0],NDim[0]);
+	nProd = matrixMult(_st_transpose(M),N);
 
 	// matrix = inverse(M.' * M) * M.' * N;
 	return matrixMult(mProd, nProd);
@@ -155,16 +155,16 @@ function inverseTransform(M,N) {
 //
 // The adjoint matrix is the transpose of the cofactor matrix
 
-function inverse(M) {
+function _st_inverse(M) {
 	var MDim = MatrixDim(M);
-	var iMat = make_matrix(MDim[0],MDim[1]);
-	iMat = (1 / determinant(M)) * transpose(cofactor(M));
+	var iMat = _st_make_matrix(MDim[0],MDim[1]);
+	iMat = (1 / _st_determinant(M, MDim[0])) * _st_transpose(_st_coFactor(M, MDim[0]));
 	return iMat;
 }
 
 // Transpose of a square matrix
 
-function transpose(M) {
+function _st_transpose(M) {
 	var tempM = M;
 	var MDim = MatrixDim(M);
 	for (var i = 0; i < MDim[0]; i++) {
@@ -175,14 +175,14 @@ function transpose(M) {
 	return tempM;
 }
 
-// Recursive definitio of determinate using expansion by minors.
+// Recursive definition of determinant using expansion by minors.
 // src: https://www.cs.rochester.edu/u/brown/Crypto/assts/projects/adj.html
 
-function determinant(M, n) {
+function _st_determinant(M, n) {
 	var i, j, j1, j2;
 	var det = 0.0;
 	var MDim = MatrixDim(M);
-	var detM = make_matrix(n-1,n-1);
+	var detM = _st_make_matrix(n-1,n-1);
 	
 	if (n < 1) {
 		return null;
@@ -193,24 +193,25 @@ function determinant(M, n) {
 	} else {
 		det = 0;
 		for (j1 = 0; j1 < n; j1++) {
-		for (i=0; i < n-1; i++) { // In C this loop makes malloc memory }
-		for (i=1; i < n; i++) {
-			j2 = 0;
-			for (j = 0; j < n; j++) {
-				detM[i-1][j2] = M[i][j];
-				j2++;
+			// (C version called malloc here; not needed in JS)
+			for (i=1; i < n; i++) {
+				j2 = 0;
+				for (j = 0; j < n; j++) {
+					detM[i-1][j2] = M[i][j];
+					j2++;
+				}
 			}
+			det += Math.pow(-1.0,j1+2.0) * M[0][j1] * _st_determinant(detM,n-1);
 		}
-		det += Math.pow(-1.0,j1+2.0) * M[0][j1] * determinant(detM,n-1);
-		}
-		return(det);
+	}
+	return det;
 }
 
 // Find the cofactor matrix of a square matrix
-function coFactor(A,n,B) {
+function _st_coFactor(A,n) {
 	var i, j, ii, jj, i1, j1;
 	var det;
-	var C = make_matrix(n-1,n-1);
+	var C = _st_make_matrix(n-1,n-1);
 	
 	for (j = 0; j < n; j++) {
 		for (i = 0; i < n; i++) {
@@ -240,7 +241,7 @@ function coFactor(A,n,B) {
 				
 		
 
-function printMatrix(M) {
+function st_printMatrix(M) {
 	var MDim = MatrixDim(M);
 	var oStr = "[";
 	for (var i = 0; i < MDim[0]; i++) {
@@ -266,7 +267,7 @@ function MatrixDim(M) {
 	return size;
 }
 
-function make_matrix(x,y) {
+function _st_make_matrix(x,y) {
 	var array2D = new Array(x);
 	
 	for (var i = 0; i < array2D.length; i++) {
