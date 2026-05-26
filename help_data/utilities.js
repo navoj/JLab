@@ -1,0 +1,32 @@
+// help_data/utilities.js
+// Converted from JovansCalculator/help_data/utilities.lsp
+
+_helpDb.push.apply(_helpDb, [
+  { name:'two_col_table', lispName:'two-col-table', category:'Utilities',
+    parameters:'(fn, start, end, step=1)', description:'Generate a two-column table of function values [[x, f(x)], ...].',
+    example:'two_col_table(Math.sin, 0, Math.PI, 0.1)' },
+  { name:'print_two_col_table', lispName:'print-two-col-table', category:'Utilities',
+    parameters:'(fn, start, end, step=1, label="f(x)")', description:'Print a formatted two-column table with optional column label.',
+    example:'print_two_col_table(Math.cos, 0, 2*Math.PI, 0.2, "cosine")' },
+  { name:'linspace', lispName:'linspace', category:'Utilities',
+    parameters:'(start, end, n)', description:'Generate n evenly spaced values between start and end (inclusive).',
+    example:'linspace(0, 1, 11)' },
+  { name:'arange', lispName:'arange', category:'Utilities',
+    parameters:'(start, end, step=1)', description:'Generate values from start to end (exclusive) with given step.',
+    example:'arange(0, 10, 2)' },
+  { name:'get_current_time', lispName:'get-current-time', category:'Utilities',
+    parameters:'()', description:'Get the current date and time as a formatted string.',
+    example:'get_current_time()' },
+  { name:'generate_uuid', lispName:'generate-uuid', category:'Utilities',
+    parameters:'()', description:'Generate a random UUID v4 string.',
+    example:'generate_uuid()' },
+  { name:'convert_chars_to_integer_codes', lispName:'convert-chars-to-integer-codes', category:'Utilities',
+    parameters:'(input_file, output_file)', description:'Read a file and write each character as its ASCII code.',
+    example:'convert_chars_to_integer_codes("in.txt", "out.txt")' },
+  { name:'string_split', lispName:'split-string', category:'Utilities',
+    parameters:'(str, delimiter)', description:'Split a string by a delimiter.',
+    example:'string_split("a,b,c", ",")' },
+  { name:'string_join', lispName:'join-string', category:'Utilities',
+    parameters:'(arr, delimiter)', description:'Join an array of strings with a delimiter.',
+    example:'string_join(["a","b","c"], ",")' },
+]);
